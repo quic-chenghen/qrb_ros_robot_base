@@ -8,6 +8,9 @@ from launch.substitutions import Command
 from launch.actions import LogInfo
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.substitutions import LaunchConfiguration
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
@@ -19,6 +22,13 @@ def generate_launch_description():
         'config',
         ROBOT_BASE_MODEL + '.yaml'
     )
+
+    declare_params_file = DeclareLaunchArgument(
+        'params_file',
+        default_value=config,
+        description='Path to the YAML file for parameters'
+    )
+
     model = os.path.join(
         get_package_share_directory('qrb_ros_robot_base_urdf'),
         'urdf',
@@ -30,7 +40,7 @@ def generate_launch_description():
         package='qrb_ros_robot_base',
         executable='robot_base',
         output='screen',
-        parameters=[config]
+        parameters=[LaunchConfiguration('params_file')]
     )
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
