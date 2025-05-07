@@ -62,6 +62,7 @@ void MotionManager::qrc_message_handle(void * data)
       break;
 #endif
     case control_msg_type_e::MOTOR_DRIVER_STATUS:
+      get_instance().motor_driver_status_ack_ = true;
       std::cout << "MotionManager: motor driver error: " << msg->data.motor_driver_status
                 << std::endl;
       error.set_type(msg->data.motor_driver_status);
@@ -167,8 +168,9 @@ bool MotionManager::set_motion_mode(const MotionMode & mode)
   }
   {
     std::unique_lock<std::mutex> lock(msg_mtx_);
-    msg_cond_.wait(lock, [&] { return set_control_mode_ack_; });
+    msg_cond_.wait(lock, [&] { return (set_control_mode_ack_ || motor_driver_status_ack_); });
     set_control_mode_ack_ = false;
+    motor_driver_status_ack_ = false;
   }
   if (control_mode_ != mode) {
     return false;

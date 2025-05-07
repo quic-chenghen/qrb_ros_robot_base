@@ -74,6 +74,7 @@ private:
   std::condition_variable msg_cond_;
   bool set_position_ack_ = false;
   bool set_control_mode_ack_ = false;
+  bool motor_driver_status_ack_ = false;
 #ifdef ENABLE_TEST
   bool set_emergency_ack_ = false;
   bool set_emergency_result_ = false;
