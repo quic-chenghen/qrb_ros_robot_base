@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(qrb_robot_base_manager VERSION 1.2.3)
+project(qrb_robot_base_manager VERSION 1.2.4)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
